@@ -92,7 +92,7 @@ void main(List<String> arguments) {
 
   while (!foundSolution) {
     try {
-      waveFunctionCollapse.run();
+      waveFunctionCollapse.runRandom();
 
       foundSolution = true;
     } on WaveFunctionCollapseException {

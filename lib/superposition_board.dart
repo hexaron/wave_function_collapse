@@ -12,21 +12,29 @@ class SuperpositionBoard<T> {
 
   bool get isCollapsed => fields.every((field) => field.isCollapsed);
 
-  /// Running this method will run every [Constrain].
+  /// Running this method will run every [Constrain] until everything satisfies
+  /// the constraints.
+  ///
+  /// It is automatically run once in the [WaveFunctionCollapse].
   ///
   /// This is needed in the case that your board is naively filled with fields,
   /// i.e. there are values, which actually contradict some [Constraint]s.
-  ///
-  /// You only need to call this method once, right before the
-  /// [WaveFunctionCollapse.run()].
   ///
   /// If you are not overly concerned with performance, you can run this method
   /// just to be sure.
   /// If your values are already properly restricted, this method is unnecessary
   /// and can be skipped.
   void initialConstrain() {
-    for (Constraint<T> constraint in constraints) {
-      constraint.constrain();
+    bool appliedConstrain = true;
+
+    while (appliedConstrain) {
+      appliedConstrain = false;
+
+      for (Constraint<T> constraint in constraints) {
+        if (constraint.constrain().isNotEmpty) {
+          appliedConstrain = true;
+        }
+      }
     }
   }
 

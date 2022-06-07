@@ -12,10 +12,18 @@ class WaveFunctionCollapse<T> {
     required this.random,
   });
 
-  SuperpositionBoard<T> run() {
+  SuperpositionBoard<T> runRandom() {
+    board.initialConstrain();
+
     while (!board.isCollapsed) {
       step();
     }
+
+    return board;
+  }
+
+  SuperpositionBoard<T> runUnique() {
+    board.initialConstrain();
 
     return board;
   }
