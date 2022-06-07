@@ -1,9 +1,9 @@
 import 'package:wave_function_collapse/constraint.dart';
 import 'package:wave_function_collapse/superposition_field.dart';
 
-class SuperpositionBoard {
-  final List<SuperpositionField> fields;
-  final List<Constraint> constraints;
+class SuperpositionBoard<T> {
+  final List<SuperpositionField<T>> fields;
+  final List<Constraint<T>> constraints;
 
   SuperpositionBoard({
     required this.fields,
@@ -25,15 +25,15 @@ class SuperpositionBoard {
   /// If your values are already properly restricted, this method is unnecessary
   /// and can be skipped.
   void initialConstrain() {
-    for (Constraint constraint in constraints) {
+    for (Constraint<T> constraint in constraints) {
       constraint.constrain();
     }
   }
 
-  Iterable<SuperpositionField> getFieldsWithMinimalEntropy() {
+  Iterable<SuperpositionField<T>> getFieldsWithMinimalEntropy() {
     // We have to restrict ourselves to the not collapsed fields, because they
     // have an entropy of 1, which is always minimal.
-    Iterable<SuperpositionField> notCollapsedFields =
+    Iterable<SuperpositionField<T>> notCollapsedFields =
         fields.where((field) => !field.isCollapsed);
 
     if (notCollapsedFields.isEmpty) {
@@ -48,10 +48,10 @@ class SuperpositionBoard {
     return fields.where((field) => field.entropy == minimalEntropy);
   }
 
-  Set<SuperpositionField> constrain(SuperpositionField lastAction) {
-    Set<SuperpositionField> changed = {};
+  Set<SuperpositionField<T>> constrain(SuperpositionField<T> lastAction) {
+    Set<SuperpositionField<T>> changed = {};
 
-    for (Constraint constraint in constraints) {
+    for (Constraint<T> constraint in constraints) {
       if (constraint.appliesTo(lastAction)) {
         changed.addAll(constraint.constrain());
       }

@@ -3,9 +3,9 @@ import 'package:wave_function_collapse/superposition_field.dart';
 
 import 'helper.dart';
 
-class Constraint {
-  final List<SuperpositionField> fields;
-  final bool Function(List<int> collapsedFields) isValid;
+class Constraint<T> {
+  final List<SuperpositionField<T>> fields;
+  final bool Function(List<T> collapsedFields) isValid;
 
   Constraint({
     required this.fields,
@@ -13,7 +13,7 @@ class Constraint {
   });
 
   /// Check if this constraint is relevant for this [field].
-  bool appliesTo(SuperpositionField field) {
+  bool appliesTo(SuperpositionField<T> field) {
     return fields.contains(field);
   }
 
@@ -22,12 +22,11 @@ class Constraint {
   ///
   /// Returns all the fields, where a proper subset was taken.
   /// I.e. all the fields, whose values were actually restricted.
-  List<SuperpositionField> constrain() {
+  List<SuperpositionField<T>> constrain() {
     // The list of justified field values.
-    List<Set<int>> fieldValues =
-        List<Set<int>>.generate(fields.length, (_) => {});
+    List<Set<T>> fieldValues = List<Set<T>>.generate(fields.length, (_) => {});
 
-    for (List<int> collapsedFields
+    for (List<T> collapsedFields
         in cartesianProduct(fields.map((field) => field.values))) {
       if (isValid(collapsedFields)) {
         // We add the values from the valid [collapsedFields] to our
@@ -42,7 +41,7 @@ class Constraint {
     // Next we update all of our fields if necessary and return the ones, we
     // needed to change.
 
-    List<SuperpositionField> changedFields = [];
+    List<SuperpositionField<T>> changedFields = [];
 
     for (int i = 0; i < fields.length; i++) {
       // Use a constant [SetEquality] to check whether the values have changed.

@@ -10,7 +10,7 @@ void main(List<String> arguments) {
   // experiment.
 
   // We store them in our own representation of the data.
-  List<List<SuperpositionField>> sudoku4By4 = [
+  List<List<SuperpositionField<int>>> sudoku4By4 = [
     for (int i = 0; i < 4; i++)
       [
         for (int j = 0; j < 4; j++)
@@ -27,7 +27,7 @@ void main(List<String> arguments) {
         values.contains(4);
   }
 
-  List<Constraint> rowConstraints = [
+  List<Constraint<int>> rowConstraints = [
     for (int i = 0; i < 4; i++)
       Constraint(
         fields: [for (int j = 0; j < 4; j++) sudoku4By4[i][j]],
@@ -35,7 +35,7 @@ void main(List<String> arguments) {
       )
   ];
 
-  List<Constraint> columnConstraints = [
+  List<Constraint<int>> columnConstraints = [
     for (int j = 0; j < 4; j++)
       Constraint(
         fields: [for (int i = 0; i < 4; i++) sudoku4By4[i][j]],
@@ -43,7 +43,7 @@ void main(List<String> arguments) {
       )
   ];
 
-  List<SuperpositionField> blockAt(int i, int j) {
+  List<SuperpositionField<int>> blockAt(int i, int j) {
     return [
       sudoku4By4[i][j],
       sudoku4By4[i][j + 1],
@@ -52,7 +52,7 @@ void main(List<String> arguments) {
     ];
   }
 
-  List<Constraint> blockConstraints = [
+  List<Constraint<int>> blockConstraints = [
     Constraint(
       fields: blockAt(0, 0),
       isValid: contains1Through4,
@@ -73,17 +73,17 @@ void main(List<String> arguments) {
 
   // Next we construct the [SuperpositionBoard].
 
-  SuperpositionBoard board = SuperpositionBoard(
+  SuperpositionBoard<int> board = SuperpositionBoard(
     fields: [
-      for (List<SuperpositionField> row in sudoku4By4)
-        for (SuperpositionField field in row) field
+      for (List<SuperpositionField<int>> row in sudoku4By4)
+        for (SuperpositionField<int> field in row) field
     ],
     constraints: rowConstraints + columnConstraints + blockConstraints,
   );
 
   // Finally we initialize the [WaveFunctionCollapse] algorithm.
 
-  WaveFunctionCollapse waveFunctionCollapse = WaveFunctionCollapse(
+  WaveFunctionCollapse<int> waveFunctionCollapse = WaveFunctionCollapse(
     board: board,
     random: Random(123),
   );

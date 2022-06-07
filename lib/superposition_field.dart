@@ -1,5 +1,5 @@
-class SuperpositionField {
-  Set<int> values;
+class SuperpositionField<T> {
+  Set<T> values;
 
   final String? name;
 
@@ -12,7 +12,7 @@ class SuperpositionField {
 
   int get entropy => values.length;
 
-  int get collapsedValue {
+  T get collapsedValue {
     assert(
       isCollapsed,
       'Can only get [collapsedValue] on a [collapsed] [SuperpositionField]: $this',
@@ -21,11 +21,11 @@ class SuperpositionField {
     return values.first;
   }
 
-  void collapseTo(int value) {
+  void collapseTo(T value) {
     values = {value};
   }
 
-  void constrainTo(Set<int> values) {
+  void constrainTo(Set<T> values) {
     if (values.isEmpty) {
       throw EmptySuperpositionFieldException();
     }

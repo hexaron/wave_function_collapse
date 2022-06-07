@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:wave_function_collapse/superposition_board.dart';
 import 'package:wave_function_collapse/superposition_field.dart';
 
-class WaveFunctionCollapse {
-  final SuperpositionBoard board;
+class WaveFunctionCollapse<T> {
+  final SuperpositionBoard<T> board;
   final Random random;
 
   WaveFunctionCollapse({
@@ -12,7 +12,7 @@ class WaveFunctionCollapse {
     required this.random,
   });
 
-  SuperpositionBoard run() {
+  SuperpositionBoard<T> run() {
     while (!board.isCollapsed) {
       step();
     }
@@ -21,29 +21,29 @@ class WaveFunctionCollapse {
   }
 
   void step() {
-    List<SuperpositionField> minimalEntropyFields =
+    List<SuperpositionField<T>> minimalEntropyFields =
         board.getFieldsWithMinimalEntropy().toList();
 
     if (minimalEntropyFields.isEmpty) {
       return;
     }
 
-    SuperpositionField randomField = _chooseRandom(minimalEntropyFields);
+    SuperpositionField<T> randomField = _chooseRandom(minimalEntropyFields);
 
     assert(randomField.entropy >= 2);
 
-    int randomValue = _chooseRandom(randomField.values.toList());
+    T randomValue = _chooseRandom(randomField.values.toList());
 
     randomField.collapseTo(randomValue);
 
     propagate(randomField);
   }
 
-  void propagate(SuperpositionField collapsedField) {
-    Set<SuperpositionField> stack = {collapsedField};
+  void propagate(SuperpositionField<T> collapsedField) {
+    Set<SuperpositionField<T>> stack = {collapsedField};
 
     while (stack.isNotEmpty) {
-      SuperpositionField field = stack.first;
+      SuperpositionField<T> field = stack.first;
       stack.remove(field);
 
       stack.addAll(board.constrain(field));
