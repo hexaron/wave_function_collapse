@@ -1,2 +1,7 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+# Dart wave function collapse
+
+A `dart` implementation of the [wave function collapse](https://github.com/mxgmn/WaveFunctionCollapse) algorithm.
+
+## Example
+
+See *bin/wave_function_collapse.dart* for a 4x4 sudoku generator.
