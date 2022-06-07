@@ -50,7 +50,7 @@ class WaveFunctionCollapse<T> {
     }
   }
 
-  T _chooseRandom<T>(List<T> list) {
+  W _chooseRandom<W>(List<W> list) {
     return list[random.nextInt(list.length)];
   }
 }

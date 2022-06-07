@@ -21,12 +21,11 @@ void main() {
           ]
       ];
 
-      bool contains1Through4(List<int> values) {
-        return values.contains(1) &&
-            values.contains(2) &&
-            values.contains(3) &&
-            values.contains(4);
-      }
+      bool contains1Through4(List<int> values) =>
+          values.contains(1) &&
+          values.contains(2) &&
+          values.contains(3) &&
+          values.contains(4);
 
       List<Constraint<int>> rowConstraints = [
         for (int i = 0; i < 4; i++)
@@ -44,14 +43,12 @@ void main() {
           )
       ];
 
-      List<SuperpositionField<int>> blockAt(int i, int j) {
-        return [
-          sudoku4By4[i][j],
-          sudoku4By4[i][j + 1],
-          sudoku4By4[i + 1][j],
-          sudoku4By4[i + 1][j + 1]
-        ];
-      }
+      List<SuperpositionField<int>> blockAt(int i, int j) => [
+            sudoku4By4[i][j],
+            sudoku4By4[i][j + 1],
+            sudoku4By4[i + 1][j],
+            sudoku4By4[i + 1][j + 1]
+          ];
 
       List<Constraint<int>> blockConstraints = [
         Constraint(
@@ -94,7 +91,7 @@ void main() {
           waveFunctionCollapse.run();
 
           foundSolution = true;
-        } on EmptySuperpositionFieldException catch (e) {
+        } on WaveFunctionCollapseException {
           print('The algorithm took a wrong turn. Trying again...');
         }
       }

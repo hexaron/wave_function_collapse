@@ -27,7 +27,7 @@ class SuperpositionField<T> {
 
   void constrainTo(Set<T> values) {
     if (values.isEmpty) {
-      throw EmptySuperpositionFieldException();
+      throw WaveFunctionCollapseException();
     }
 
     this.values = values;
@@ -51,4 +51,7 @@ class SuperpositionField<T> {
   }
 }
 
-class EmptySuperpositionFieldException implements Exception {}
+/// Gets thrown, when the algorithm arrived at a situation, where there is a
+/// [SuperpositionField] for which no value can be chosen, because each would
+/// contradict a [Constraint].
+class WaveFunctionCollapseException implements Exception {}
